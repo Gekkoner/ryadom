@@ -2,4 +2,8 @@ node_modules/
 .sites-runtime/
 .env
 *.log
-dist/
+android/.gradle/
+android/**/build/
+android/local.properties
+*.keystore
+*.jks
