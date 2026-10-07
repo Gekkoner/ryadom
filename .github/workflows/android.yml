@@ -8,7 +8,7 @@ permissions:
   contents: write
 concurrency:
   group: android-build
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -21,9 +21,14 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
-      - uses: android-actions/setup-android@v3
-        with:
-          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+      - name: Use installed Android SDK
+        timeout-minutes: 5
+        run: |
+          if [ ! -f "$ANDROID_HOME/platforms/android-35/android.jar" ] || [ ! -x "$ANDROID_HOME/build-tools/35.0.0/apksigner" ]; then
+            "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-35" "build-tools;35.0.0"
+          fi
+          test -f "$ANDROID_HOME/platforms/android-35/android.jar"
+          test -x "$ANDROID_HOME/build-tools/35.0.0/apksigner"
       - name: Keep beta signing key for subsequent builds
         uses: actions/cache@v4
         with:
