@@ -17,7 +17,8 @@ import android.webkit.*;
 import android.widget.*;
 import org.json.*;
 import java.io.*;
-import java.net.*;
+import java.net.URL;
+import java.net.HttpURLConnection;
 import java.util.*;
 
 public class MainActivity extends Activity {
